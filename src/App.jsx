@@ -68,6 +68,8 @@ const STRINGS = {
     haveAccount: "Already have an account?", noAccount: "Don't have an account?",
     resetPasswordTitle: "Reset your password", resetPasswordSub: "Enter your email and we'll send you a link to reset it.",
     sendResetLink: "Send reset link", resetLinkSent: "Check your email for a reset link.",
+    setNewPasswordTitle: "Set a new password", setNewPasswordSub: "Choose a new password for your account.", newPassword: "New password", confirmPassword: "Confirm password",
+    passwordsDontMatch: "Those passwords don't match.", passwordTooShort: "Password must be at least 6 characters.", saveNewPassword: "Save new password", passwordUpdated: "Password updated! Redirecting...",
     authErrorGeneric: "Something went wrong. Please check your details and try again.",
     authErrorExists: "An account with this email already exists.", authErrorInvalid: "Incorrect email or password.",
     signingUp: "Creating your account...", loggingIn: "Logging in...",
@@ -147,6 +149,8 @@ const STRINGS = {
     haveAccount: "Het jy reeds 'n rekening?", noAccount: "Het jy nie 'n rekening nie?",
     resetPasswordTitle: "Herstel jou wagwoord", resetPasswordSub: "Voer jou e-pos in en ons stuur vir jou 'n skakel om dit te herstel.",
     sendResetLink: "Stuur herstel-skakel", resetLinkSent: "Kyk jou e-pos vir 'n herstel-skakel.",
+    setNewPasswordTitle: "Stel 'n nuwe wagwoord", setNewPasswordSub: "Kies 'n nuwe wagwoord vir jou rekening.", newPassword: "Nuwe wagwoord", confirmPassword: "Bevestig wagwoord",
+    passwordsDontMatch: "Daardie wagwoorde stem nie ooreen nie.", passwordTooShort: "Wagwoord moet minstens 6 karakters wees.", saveNewPassword: "Stoor nuwe wagwoord", passwordUpdated: "Wagwoord opgedateer! Herlei tans...",
     authErrorGeneric: "Iets het verkeerd geloop. Gaan asseblief jou besonderhede na en probeer weer.",
     authErrorExists: "'n Rekening met hierdie e-pos bestaan reeds.", authErrorInvalid: "Verkeerde e-pos of wagwoord.",
     signingUp: "Skep jou rekening...", loggingIn: "Teken in...",
@@ -226,6 +230,8 @@ const STRINGS = {
     haveAccount: "Usunayo i-akhawunti?", noAccount: "Awunayo i-akhawunti?",
     resetPasswordTitle: "Setha kabusha iphasiwedi yakho", resetPasswordSub: "Faka i-imeyili yakho futhi sizokuthumela isixhumanisi sokuyisetha kabusha.",
     sendResetLink: "Thumela isixhumanisi", resetLinkSent: "Hlola i-imeyili yakho ngesixhumanisi sokusetha kabusha.",
+    setNewPasswordTitle: "Setha iphasiwedi entsha", setNewPasswordSub: "Khetha iphasiwedi entsha yeakhawunti yakho.", newPassword: "Iphasiwedi entsha", confirmPassword: "Qinisekisa iphasiwedi",
+    passwordsDontMatch: "Lawo maphasiwedi awafani.", passwordTooShort: "Iphasiwedi kufanele ibe nezinhlamvu ezingaphezu kwezi-6.", saveNewPassword: "Gcina iphasiwedi entsha", passwordUpdated: "Iphasiwedi ibuyekeziwe! Iyaqondisa...",
     authErrorGeneric: "Kube nesimo esingalungile. Sicela uhlole imininingwane yakho uzame futhi.",
     authErrorExists: "I-akhawunti enale-imeyili ivele ikhona.", authErrorInvalid: "I-imeyili noma iphasiwedi engalungile.",
     signingUp: "Iyakha i-akhawunti yakho...", loggingIn: "Iyangena...",
@@ -305,6 +311,8 @@ const STRINGS = {
     haveAccount: "Sele unayo i-akhawunti?", noAccount: "Awunayo i-akhawunti?",
     resetPasswordTitle: "Phinda usete iphasiwedi yakho", resetPasswordSub: "Faka i-imeyile yakho size sikuthumele ikhonkco lokuyiseta kwakhona.",
     sendResetLink: "Thumela ikhonkco", resetLinkSent: "Jonga i-imeyile yakho ngekhonkco lokuseta kwakhona.",
+    setNewPasswordTitle: "Seta iphasiwedi entsha", setNewPasswordSub: "Khetha iphasiwedi entsha yeakhawunti yakho.", newPassword: "Iphasiwedi entsha", confirmPassword: "Qinisekisa iphasiwedi",
+    passwordsDontMatch: "Loo maphasiwedi awafani.", passwordTooShort: "Iphasiwedi kufuneka ibe noonobumba abangama-6 ubuncinane.", saveNewPassword: "Gcina iphasiwedi entsha", passwordUpdated: "Iphasiwedi ihlaziyiwe! Iyalathisa...",
     authErrorGeneric: "Kubekho ingxaki. Nceda ujonge iinkcukacha zakho uzame kwakhona.",
     authErrorExists: "I-akhawunti ene-imeyile efanayo ikhona kakade.", authErrorInvalid: "I-imeyile okanye iphasiwedi engachanekileyo.",
     signingUp: "Iyenza i-akhawunti yakho...", loggingIn: "Iyangena...",
@@ -650,6 +658,59 @@ function VoiceInputPanel({ t, lang, onTranscriptReady, autoSubmitLabel }) {
 /* ============================== AUTH SCREEN ============================== */
 /* Shown before language selection, so its copy is fixed in English/simple terms
    rather than driven by the i18n system (the person hasn't picked a language yet). */
+/* ============================== SET NEW PASSWORD (after a recovery-link click) ============================== */
+function SetNewPasswordScreen({ t, onDone }) {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [done, setDone] = useState(false);
+
+  const inputStyle = { width: "100%", padding: "13px 14px", borderRadius: 12, border: `1px solid ${C.line}`, fontFamily: FONT_BODY, fontSize: 14, outline: "none", background: "#fff", boxSizing: "border-box" };
+  const labelStyle = { fontFamily: FONT_BODY, fontSize: 12, color: "rgba(13,23,59,0.55)", display: "block", marginBottom: 5 };
+
+  const submit = async () => {
+    setError("");
+    if (password.length < 6) { setError(t.passwordTooShort); return; }
+    if (password !== confirm) { setError(t.passwordsDontMatch); return; }
+    setLoading(true);
+    const { error: err } = await supabase.auth.updateUser({ password });
+    setLoading(false);
+    if (err) { setError(err.message); return; }
+    setDone(true);
+    setTimeout(onDone, 1200);
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: C.paperDim, padding: 20 }}>
+      <div style={{ width: "100%", maxWidth: 380, background: "#fff", border: `1px solid ${C.line}`, borderRadius: 20, padding: 28 }}>
+        <div style={{ marginBottom: 20, display: "flex", justifyContent: "center" }}>
+          <Logo tone="dark" height={26} />
+        </div>
+        <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 20, color: C.ink, margin: "0 0 6px", textAlign: "center" }}>{t.setNewPasswordTitle}</h2>
+        <p style={{ fontFamily: FONT_BODY, fontSize: 13.5, color: "rgba(13,23,59,0.6)", margin: "0 0 22px", textAlign: "center" }}>{t.setNewPasswordSub}</p>
+
+        {done ? (
+          <p style={{ fontFamily: FONT_BODY, fontSize: 13.5, color: C.greenDeep, textAlign: "center", margin: 0 }}>{t.passwordUpdated}</p>
+        ) : (
+          <>
+            <div style={{ marginBottom: 14 }}>
+              <label style={labelStyle}>{t.newPassword}</label>
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={inputStyle} />
+            </div>
+            <div style={{ marginBottom: 18 }}>
+              <label style={labelStyle}>{t.confirmPassword}</label>
+              <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} style={inputStyle} />
+            </div>
+            {error && <p style={{ fontFamily: FONT_BODY, fontSize: 13, color: C.coral, margin: "0 0 14px" }}>{error}</p>}
+            <Btn variant="primary" full disabled={loading || !password || !confirm} onClick={submit}>{loading ? "..." : t.saveNewPassword}</Btn>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function AuthScreen({ onAuthed }) {
   const [mode, setMode] = useState("signup"); // signup | login | reset
   const [form, setForm] = useState({ name: "", surname: "", email: "", password: "" });
@@ -2192,6 +2253,7 @@ export default function pailotApp() {
   const [authChecked, setAuthChecked] = useState(false);
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [passwordRecovery, setPasswordRecovery] = useState(false);
   const [screen, setScreen] = useState("home");
   const [activeMaterialId, setActiveMaterialId] = useState(null);
   const [showUpgrade, setShowUpgrade] = useState(false);
@@ -2219,7 +2281,8 @@ export default function pailotApp() {
       if (data.session) loadProfile(data.session.user.id);
       setAuthChecked(true);
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, newSession) => {
+      if (event === "PASSWORD_RECOVERY") setPasswordRecovery(true);
       setSession(newSession);
       if (newSession) loadProfile(newSession.user.id);
       else setProfile(null);
@@ -2294,6 +2357,15 @@ export default function pailotApp() {
     return (
       <div style={{ minHeight: "100vh", background: C.ink, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Logo tone="light" height={30} />
+      </div>
+    );
+  }
+
+  if (passwordRecovery) {
+    return (
+      <div style={{ fontFamily: FONT_BODY }}>
+        <GoogleFonts />
+        <SetNewPasswordScreen t={t} onDone={() => setPasswordRecovery(false)} />
       </div>
     );
   }
