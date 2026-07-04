@@ -687,7 +687,7 @@ function SetNewPasswordScreen({ t, onDone }) {
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: C.paperDim, padding: 20 }}>
       <div style={{ width: "100%", maxWidth: 380, background: "#fff", border: `1px solid ${C.line}`, borderRadius: 20, padding: 28 }}>
         <div style={{ marginBottom: 20, display: "flex", justifyContent: "center" }}>
-          <Logo tone="dark" height={26} />
+          <Logo tone="dark" height={30} />
         </div>
         <h2 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 20, color: C.ink, margin: "0 0 6px", textAlign: "center" }}>{t.setNewPasswordTitle}</h2>
         <p style={{ fontFamily: FONT_BODY, fontSize: 13.5, color: "rgba(13,23,59,0.6)", margin: "0 0 22px", textAlign: "center" }}>{t.setNewPasswordSub}</p>
@@ -759,7 +759,7 @@ function AuthScreen({ onAuthed }) {
       <Spotlight tone="green" className="auth-hero" style={{ flex: 1, background: C.ink, display: "none", alignItems: "center", justifyContent: "center", padding: 48 }}>
         <div style={{ maxWidth: 380, position: "relative", zIndex: 1 }}>
           <div style={{ marginBottom: 24 }}>
-            <Logo tone="light" height={30} />
+            <Logo tone="light" height={44} />
           </div>
           <h1 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 32, color: C.paper, lineHeight: 1.2, margin: "0 0 14px" }}>Learn faster, in your language.</h1>
           <p style={{ fontFamily: FONT_BODY, fontSize: 15, color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: 0 }}>Sign up to save your progress, join the leaderboard, and pick up right where you left off.</p>
@@ -771,7 +771,7 @@ function AuthScreen({ onAuthed }) {
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 24px" }}>
         <div style={{ width: "100%", maxWidth: 380 }}>
           <div style={{ marginBottom: 32, display: "flex", justifyContent: "center" }}>
-            <Logo tone="dark" height={26} />
+            <Logo tone="dark" height={32} />
           </div>
 
           {mode === "reset" ? (
@@ -852,7 +852,7 @@ function LanguagePicker({ onPick }) {
       <div style={{ position: "absolute", bottom: -80, left: -40, width: 240, height: 240, borderRadius: "50%", background: "radial-gradient(circle, rgba(95,184,166,0.14), transparent 70%)", pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 1 }}>
         <div style={{ marginBottom: 28 }}>
-          <Logo tone="light" height={28} />
+          <Logo tone="light" height={40} />
         </div>
         <h1 style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 30, color: C.paper, lineHeight: 1.15, margin: "0 0 10px 0" }}>
           Welcome.<br/>Welkom.<br/>Siyakwamukela.<br/>Wamkelekile.
@@ -906,9 +906,9 @@ function TopNav({ t, screen, setScreen, user, setShowUpgrade, onChangeLanguage, 
   ];
   return (
     <div style={{ position: "sticky", top: 0, zIndex: 40, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(10px)", borderBottom: `1px solid ${C.line}` }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 76 }}>
         <button onClick={() => setScreen("home")} style={{ display: "flex", alignItems: "center", background: "none", border: "none", cursor: "pointer" }}>
-          <Logo tone="dark" height={26} />
+          <Logo tone="dark" height={38} />
         </button>
 
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -2570,7 +2570,7 @@ export default function pailotApp() {
   if (!authChecked) {
     return (
       <div style={{ minHeight: "100vh", background: C.ink, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Logo tone="light" height={30} />
+        <Logo tone="light" height={36} />
       </div>
     );
   }
@@ -2596,7 +2596,7 @@ export default function pailotApp() {
   if (!profile) {
     return (
       <div style={{ minHeight: "100vh", background: C.paper, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Logo tone="dark" height={28} />
+        <Logo tone="dark" height={36} />
       </div>
     );
   }
@@ -2651,7 +2651,7 @@ export default function pailotApp() {
       ) : (
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px 10px", borderBottom: `1px solid ${C.line}`, background: C.paper, position: "sticky", top: 0, zIndex: 40 }}>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Logo tone="dark" height={22} />
+            <Logo tone="dark" height={28} />
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <button onClick={() => setShowCalculator(true)} aria-label="Calculator" style={{ width: 32, height: 32, borderRadius: "50%", background: C.paperDim, border: "none", display: "flex", alignItems: "center", justifyContent: "center", color: C.ink, cursor: "pointer" }}><Icon.calculator size={16} /></button>
@@ -2680,6 +2680,7 @@ export default function pailotApp() {
     </div>
   );
 }
+
 
 
 
