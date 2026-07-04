@@ -535,6 +535,8 @@ const Icon = {
   examIcon: (p) => (<svg viewBox="0 0 24 24" width={p.size||20} height={p.size||20} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 2v4M15 2v4"/><rect x="4" y="4" width="16" height="18" rx="2"/><path d="m9 14 2 2 4-4"/></svg>),
   plus: (p) => (<svg viewBox="0 0 24 24" width={p.size||18} height={p.size||18} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>),
   trash: (p) => (<svg viewBox="0 0 24 24" width={p.size||16} height={p.size||16} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></svg>),
+  calculator: (p) => (<svg viewBox="0 0 24 24" width={p.size||18} height={p.size||18} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01M16 19h.01"/></svg>),
+  paperclip: (p) => (<svg viewBox="0 0 24 24" width={p.size||18} height={p.size||18} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5 12.4 20a4.5 4.5 0 0 1-6.4-6.4l8.1-8.1a3 3 0 0 1 4.2 4.2l-8.1 8.1a1.5 1.5 0 0 1-2.1-2.1l7.4-7.4"/></svg>),
 };
 
 /* ============================== LOGO ============================== */
@@ -895,7 +897,7 @@ function BottomNav({ t, screen, setScreen }) {
   );
 }
 
-function TopNav({ t, screen, setScreen, user, setShowUpgrade, onChangeLanguage }) {
+function TopNav({ t, screen, setScreen, user, setShowUpgrade, onChangeLanguage, onOpenCalculator }) {
   const items = [
     { key: "home", label: t.navHome },
     { key: "resources", label: t.navResources },
@@ -922,6 +924,7 @@ function TopNav({ t, screen, setScreen, user, setShowUpgrade, onChangeLanguage }
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <button onClick={onOpenCalculator} aria-label="Calculator" style={{ width: 36, height: 36, borderRadius: "50%", background: C.paperDim, border: "none", display: "flex", alignItems: "center", justifyContent: "center", color: C.ink, cursor: "pointer" }}><Icon.calculator size={16} /></button>
           <button onClick={onChangeLanguage} style={{ display: "flex", alignItems: "center", gap: 5, background: "none", border: `1px solid ${C.line}`, borderRadius: 20, padding: "7px 12px", cursor: "pointer", fontFamily: FONT_BODY, fontSize: 12.5, color: "rgba(21,25,43,0.6)", fontWeight: 600 }}>
             {LANGS.find(l=>l.code===user.lang).code.toUpperCase()}
           </button>
@@ -1309,7 +1312,7 @@ function UploadScreen({ t, user, onMaterialCreated, setShowUpgrade, fileInputRef
       <div>
         <Header title={t.chooseActionTitle} sub={t.chooseActionSub} />
         <div style={{ padding: "0 20px 8px" }}>
-          <div style={{ background: C.paperDim, borderRadius: 14, padding: "12px 14px", marginBottom: 16 }}>
+          <div style={{ background: "#fff", border: `1px solid ${C.line}`, borderRadius: 14, padding: "12px 14px", marginBottom: 16 }}>
             <p style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 14, color: C.ink, margin: 0 }}>{pendingMaterial.title}</p>
             <p style={{ fontFamily: FONT_BODY, fontSize: 12.5, color: "rgba(21,25,43,0.55)", margin: "2px 0 0 0" }}>{pendingMaterial.subject}</p>
           </div>
@@ -1381,7 +1384,7 @@ function UploadScreen({ t, user, onMaterialCreated, setShowUpgrade, fileInputRef
         {itemWarning && <p style={{ fontFamily: FONT_BODY, fontSize: 12.5, color: C.coral, margin: "-4px 0 0" }}>{itemWarning}</p>}
 
         <button onClick={() => { setShowSpeak((s) => !s); setShowPaste(false); }} style={{ display: "flex", alignItems: "center", gap: 14, background: showSpeak ? C.paperDim : "#fff", border: `1px solid ${showSpeak ? C.ink : C.line}`, borderRadius: 16, padding: "18px 18px", cursor: "pointer", textAlign: "left" }}>
-          <div style={{ width: 42, height: 42, borderRadius: 12, background: C.paperDim, color: C.coral, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon.mic size={20} /></div>
+          <div style={{ width: 42, height: 42, borderRadius: 12, background: "#fff", color: C.coral, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon.mic size={20} /></div>
           <p style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 15, color: C.ink, margin: 0 }}>{t.speakInstead}</p>
         </button>
 
@@ -1394,7 +1397,7 @@ function UploadScreen({ t, user, onMaterialCreated, setShowUpgrade, fileInputRef
         )}
 
         <button onClick={() => { setShowPaste((s) => !s); setShowSpeak(false); }} style={{ display: "flex", alignItems: "center", gap: 14, background: showPaste ? C.paperDim : "#fff", border: `1px solid ${showPaste ? C.ink : C.line}`, borderRadius: 16, padding: "18px 18px", cursor: "pointer", textAlign: "left" }}>
-          <div style={{ width: 42, height: 42, borderRadius: 12, background: C.paperDim, color: C.tealDeep, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon.type size={20} /></div>
+          <div style={{ width: 42, height: 42, borderRadius: 12, background: "#fff", color: C.tealDeep, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon.type size={20} /></div>
           <p style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 15, color: C.ink, margin: 0 }}>{t.typeNotes}</p>
         </button>
 
@@ -1629,7 +1632,7 @@ function QuizTab({ t, user, material, updateMaterial, setShowUpgrade, onXpEarned
         })}
       </div>
       {submitted && q.explanation && (
-        <div style={{ background: C.paperDim, borderRadius: 12, padding: "12px 14px", marginBottom: 18 }}>
+        <div style={{ background: "#fff", border: `1px solid ${C.line}`, borderRadius: 12, padding: "12px 14px", marginBottom: 18 }}>
           <p style={{ fontFamily: FONT_BODY, fontWeight: 700, fontSize: 12.5, color: selected === q.correctIndex ? C.tealDeep : C.coral, margin: "0 0 4px" }}>{selected === q.correctIndex ? t.correct : t.incorrect}</p>
           <p style={{ fontFamily: FONT_BODY, fontSize: 13, color: "rgba(21,25,43,0.75)", margin: 0, lineHeight: 1.5 }}>{q.explanation}</p>
         </div>
@@ -1853,11 +1856,15 @@ function AdminUploadModal({ t, onClose, onUploaded }) {
 }
 
 /* ============================== AI TUTOR ============================== */
-function TutorScreen({ t, user, onXpEarned, setShowUpgrade, incrementTutorUse, viewport }) {
+function TutorScreen({ t, user, onXpEarned, setShowUpgrade, incrementTutorUse, viewport, onOpenCalculator }) {
   const [messages, setMessages] = useState([{ role: "assistant", content: t.tutorWelcome }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [attachItems, setAttachItems] = useState([]);
+  const [itemWarning, setItemWarning] = useState("");
   const scrollRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
   const limit = PLAN_LIMITS[user.plan].tutorPerDay;
   const limitReached = limit !== Infinity && user.tutorQuestionsToday >= limit;
   const speech = useSpeechRecognition(user.lang);
@@ -1866,16 +1873,71 @@ function TutorScreen({ t, user, onXpEarned, setShowUpgrade, incrementTutorUse, v
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, [messages, loading]);
   useEffect(() => { if (speech.transcript) setInput(speech.transcript); }, [speech.transcript]);
 
+  const batchChars = attachItems.reduce((sum, it) => sum + (it.sizeChars || 0), 0);
+
+  const handleCameraCapture = async (file) => {
+    if (!file) return;
+    if (limitReached) { setShowUpgrade(true); return; }
+    try {
+      const item = await buildItemFromFile(file);
+      if (batchChars + item.sizeChars > MAX_BATCH_BASE64_CHARS) { setItemWarning(t.fileTooLarge); return; }
+      setItemWarning("");
+      setAttachItems((arr) => [...arr, item]);
+    } catch (e) { setItemWarning(t.unsupportedFile); }
+  };
+
+  const handleFilesChosen = async (fileList) => {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    if (limitReached) { setShowUpgrade(true); return; }
+    setItemWarning("");
+    for (const file of files) {
+      try {
+        const item = await buildItemFromFile(file);
+        if (batchChars + item.sizeChars + attachItems.reduce((s, i) => s + (i.sizeChars || 0), 0) > MAX_BATCH_BASE64_CHARS) { setItemWarning(t.fileTooLarge); continue; }
+        setAttachItems((arr) => [...arr, item]);
+      } catch (e) { setItemWarning(t.unsupportedFile); }
+    }
+  };
+
+  const removeAttachItem = (id) => setAttachItems((arr) => arr.filter((it) => it.id !== id));
+
   const send = async (overrideText) => {
     const text = (overrideText !== undefined ? overrideText : input).trim();
-    if (!text || loading) return;
+    const hasAttachments = attachItems.length > 0;
+    if ((!text && !hasAttachments) || loading) return;
     if (limitReached) { setShowUpgrade(true); return; }
     if (speech.listening) speech.stop();
-    setMessages((m) => [...m, { role: "user", content: text }]);
-    setInput(""); setLoading(true); incrementTutorUse();
+
+    const attachmentsSnapshot = attachItems;
+    const pastMessages = messages;
+    setMessages((m) => [...m, { role: "user", content: text, attachments: attachmentsSnapshot }]);
+    setInput(""); setAttachItems([]); setItemWarning(""); setLoading(true); incrementTutorUse();
+
     try {
-      const sys = `You are the pailot AI Tutor, a warm, encouraging study assistant for a South African student. Respond ONLY in ${LANGS.find(l=>l.code===user.lang).label}. Explain concepts clearly and simply, use short paragraphs, and where helpful use a worked example. Keep answers focused and not too long. If asked something unrelated to school or learning, gently redirect to studying.`;
-      const history = [...messages, { role: "user", content: text }].filter((m) => m.role === "user" || m.role === "assistant").map((m) => ({ role: m.role, content: m.content }));
+      const sys = `You are the pailot AI Tutor, a warm, encouraging study assistant for a South African student. Respond ONLY in ${LANGS.find(l=>l.code===user.lang).label}. Explain concepts clearly and simply, use short paragraphs, and where helpful use a worked example. Keep answers focused and not too long. If asked something unrelated to school or learning, gently redirect to studying. If the student attaches a photo or document without asking a specific question, do not guess what they want — briefly ask what they'd like help with (for example: solve it and explain each step, check their work, or explain a concept in it) before working through the material.`;
+
+      // Past turns are sent as lightweight text only — any photos/documents already
+      // shown to the model are never re-sent on later turns, keeping every request small.
+      const pastHistory = pastMessages
+        .filter((m) => m.role === "user" || m.role === "assistant")
+        .map((m) => ({ role: m.role, content: m.content || (m.attachments && m.attachments.length ? "[attached photo/document — already shared above]" : "") }));
+
+      let currentContent = text;
+      if (hasAttachments) {
+        const blocks = [];
+        const textPieces = [];
+        for (const item of attachmentsSnapshot) {
+          if (item.kind === "image") blocks.push({ type: "image", source: { type: "base64", media_type: item.mime, data: item.base64 } });
+          else if (item.kind === "pdf") blocks.push({ type: "document", source: { type: "base64", media_type: "application/pdf", data: item.base64 } });
+          else if (item.kind === "text") textPieces.push(item.text);
+        }
+        if (textPieces.length) blocks.push({ type: "text", text: `Extracted text from attached file(s):\n\n${textPieces.join("\n\n---\n\n")}`.slice(0, 12000) });
+        blocks.push({ type: "text", text: text || "(No specific question yet — please ask what I'd like help with before proceeding.)" });
+        currentContent = blocks;
+      }
+
+      const history = [...pastHistory, { role: "user", content: currentContent }];
       const reply = await callClaude(history, sys, 900);
       setMessages((m) => [...m, { role: "assistant", content: reply || "..." }]);
       onXpEarned(2);
@@ -1884,6 +1946,7 @@ function TutorScreen({ t, user, onXpEarned, setShowUpgrade, incrementTutorUse, v
   };
 
   const prompts = [t.promptExplain, t.promptHomework, t.promptQuiz];
+  const canSend = (input.trim().length > 0 || attachItems.length > 0) && !loading;
 
   const ChatColumn = (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", flex: 1 }}>
@@ -1891,7 +1954,25 @@ function TutorScreen({ t, user, onXpEarned, setShowUpgrade, incrementTutorUse, v
       <div ref={scrollRef} style={{ flex: 1, overflowY: "auto", padding: isDesktop ? "0" : "0 20px", display: "flex", flexDirection: "column", gap: 12, minHeight: isDesktop ? 360 : undefined }}>
         {messages.map((m, i) => (
           <div key={i} style={{ display: "flex", justifyContent: m.role === "user" ? "flex-end" : "flex-start" }}>
-            <div style={{ maxWidth: "82%", padding: "11px 15px", borderRadius: 16, background: m.role === "user" ? C.ink : "#fff", color: m.role === "user" ? C.paper : C.ink, border: m.role === "user" ? "none" : `1px solid ${C.line}`, fontFamily: FONT_BODY, fontSize: 14, lineHeight: 1.55, whiteSpace: "pre-wrap" }}>{m.content}</div>
+            <div style={{ maxWidth: "82%", display: "flex", flexDirection: "column", gap: 6, alignItems: m.role === "user" ? "flex-end" : "flex-start" }}>
+              {m.attachments && m.attachments.length > 0 && (
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                  {m.attachments.map((it) => (
+                    it.kind === "image" ? (
+                      <img key={it.id} src={it.previewUrl} alt="" style={{ width: 56, height: 56, borderRadius: 10, objectFit: "cover", border: `1px solid ${C.line}` }} />
+                    ) : (
+                      <div key={it.id} style={{ width: 56, height: 56, borderRadius: 10, background: "#fff", border: `1px solid ${C.line}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: C.greenDeep, padding: 4, overflow: "hidden" }}>
+                        <Icon.file size={16} />
+                        <span style={{ fontFamily: FONT_BODY, fontSize: 8, color: C.ink, marginTop: 2, maxWidth: 48, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{it.label}</span>
+                      </div>
+                    )
+                  ))}
+                </div>
+              )}
+              {m.content && (
+                <div style={{ padding: "11px 15px", borderRadius: 16, background: m.role === "user" ? C.ink : "#fff", color: m.role === "user" ? C.paper : C.ink, border: m.role === "user" ? "none" : `1px solid ${C.line}`, fontFamily: FONT_BODY, fontSize: 14, lineHeight: 1.55, whiteSpace: "pre-wrap" }}>{m.content}</div>
+              )}
+            </div>
           </div>
         ))}
         {loading && (
@@ -1902,7 +1983,7 @@ function TutorScreen({ t, user, onXpEarned, setShowUpgrade, incrementTutorUse, v
       </div>
       {limitReached ? (
         <div style={{ padding: isDesktop ? "14px 0 0" : "14px 20px 20px" }}>
-          <div style={{ background: C.paperDim, borderRadius: 14, padding: "14px 16px", textAlign: "center" }}>
+          <div style={{ background: "#fff", border: `1px solid ${C.line}`, borderRadius: 14, padding: "14px 16px", textAlign: "center" }}>
             <p style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 14, color: C.ink, margin: "0 0 4px" }}>{t.freeLimitReached}</p>
             <p style={{ fontFamily: FONT_BODY, fontSize: 12.5, color: "rgba(21,25,43,0.6)", margin: "0 0 12px" }}>{t.freeLimitSub}</p>
             <Btn variant="primary" full onClick={() => setShowUpgrade(true)}>{t.upgradeNow}</Btn>
@@ -1910,24 +1991,44 @@ function TutorScreen({ t, user, onXpEarned, setShowUpgrade, incrementTutorUse, v
         </div>
       ) : (
         <div style={{ padding: isDesktop ? "16px 0 0" : "12px 16px 18px" }}>
+          <input ref={fileInputRef} type="file" accept={FILE_ACCEPT} multiple style={{ display: "none" }} onChange={(e) => { handleFilesChosen(e.target.files); e.target.value = ""; }} />
+          <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={(e) => { handleCameraCapture(e.target.files[0]); e.target.value = ""; }} />
+
+          {attachItems.length > 0 && (
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 8, padding: "0 4px" }}>
+              {attachItems.map((it) => (
+                <div key={it.id} style={{ position: "relative" }}>
+                  {it.kind === "image" ? (
+                    <img src={it.previewUrl} alt="" style={{ width: 48, height: 48, borderRadius: 10, objectFit: "cover", border: `1px solid ${C.line}` }} />
+                  ) : (
+                    <div style={{ width: 48, height: 48, borderRadius: 10, background: "#fff", border: `1px solid ${C.line}`, display: "flex", alignItems: "center", justifyContent: "center", color: C.greenDeep }}><Icon.file size={16} /></div>
+                  )}
+                  <button onClick={() => removeAttachItem(it.id)} aria-label={t.removeItem} style={{ position: "absolute", top: -6, right: -6, width: 18, height: 18, borderRadius: "50%", background: C.coral, color: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}><Icon.x size={9} /></button>
+                </div>
+              ))}
+            </div>
+          )}
+          {itemWarning && <p style={{ fontFamily: FONT_BODY, fontSize: 12, color: C.coral, margin: "0 0 6px 4px" }}>{itemWarning}</p>}
           {speech.listening && (
             <p style={{ fontFamily: FONT_BODY, fontSize: 12, color: C.coral, fontWeight: 600, margin: "0 0 6px", paddingLeft: 4 }}>{t.listening}</p>
           )}
           {speech.error === "denied" && (
             <p style={{ fontFamily: FONT_BODY, fontSize: 12, color: C.coral, margin: "0 0 6px", paddingLeft: 4 }}>{t.micPermissionDenied}</p>
           )}
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            <button onClick={() => cameraInputRef.current && cameraInputRef.current.click()} aria-label={t.takePhoto} style={{ width: 40, height: 40, borderRadius: "50%", background: "#fff", border: `1px solid ${C.line}`, display: "flex", alignItems: "center", justifyContent: "center", color: C.ink, cursor: "pointer", flexShrink: 0 }}><Icon.camera size={16} /></button>
+            <button onClick={() => fileInputRef.current && fileInputRef.current.click()} aria-label={t.chooseFile} style={{ width: 40, height: 40, borderRadius: "50%", background: "#fff", border: `1px solid ${C.line}`, display: "flex", alignItems: "center", justifyContent: "center", color: C.ink, cursor: "pointer", flexShrink: 0 }}><Icon.paperclip size={16} /></button>
             {speech.isSupported && (
               <button
                 onClick={() => (speech.listening ? speech.stop() : speech.start())}
                 aria-label={t.speakNow}
-                style={{ width: 44, height: 44, borderRadius: "50%", background: speech.listening ? C.coral : C.paperDim, border: "none", display: "flex", alignItems: "center", justifyContent: "center", color: speech.listening ? "#fff" : C.ink, cursor: "pointer", flexShrink: 0, transition: "all 0.2s ease" }}
+                style={{ width: 40, height: 40, borderRadius: "50%", background: speech.listening ? C.coral : "#fff", border: speech.listening ? "none" : `1px solid ${C.line}`, display: "flex", alignItems: "center", justifyContent: "center", color: speech.listening ? "#fff" : C.ink, cursor: "pointer", flexShrink: 0, transition: "all 0.2s ease" }}
               >
-                <Icon.mic size={17} />
+                <Icon.mic size={16} />
               </button>
             )}
-            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()} placeholder={t.speakOrType} style={{ flex: 1, padding: "12px 16px", borderRadius: 24, border: `1px solid ${C.line}`, outline: "none", fontFamily: FONT_BODY, fontSize: 14, background: "#fff" }} />
-            <button onClick={() => send()} aria-label={t.send} style={{ width: 44, height: 44, borderRadius: "50%", background: C.green, border: "none", display: "flex", alignItems: "center", justifyContent: "center", color: C.ink, cursor: "pointer", flexShrink: 0 }}><Icon.send size={16} /></button>
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()} placeholder={t.speakOrType} style={{ flex: 1, minWidth: 0, padding: "12px 16px", borderRadius: 24, border: `1px solid ${C.line}`, outline: "none", fontFamily: FONT_BODY, fontSize: 14, background: "#fff" }} />
+            <button onClick={() => send()} disabled={!canSend} aria-label={t.send} style={{ width: 44, height: 44, borderRadius: "50%", background: C.green, border: "none", display: "flex", alignItems: "center", justifyContent: "center", color: C.ink, cursor: canSend ? "pointer" : "default", opacity: canSend ? 1 : 0.5, flexShrink: 0 }}><Icon.send size={16} /></button>
           </div>
         </div>
       )}
@@ -1939,7 +2040,11 @@ function TutorScreen({ t, user, onXpEarned, setShowUpgrade, incrementTutorUse, v
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "36px 32px 60px", height: "calc(100vh - 140px)", display: "flex" }}>
         <div style={{ flex: 1, maxWidth: 760 }}>{ChatColumn}</div>
         <div style={{ width: 280, marginLeft: 32, flexShrink: 0 }}>
-          <p style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 12.5, color: "rgba(21,25,43,0.45)", textTransform: "uppercase", letterSpacing: 0.5, margin: "44px 0 12px" }}>{t.suggestedPrompts}</p>
+          <button onClick={onOpenCalculator} style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", background: "#fff", border: `1px solid ${C.line}`, borderRadius: 12, padding: "12px 14px", cursor: "pointer", marginTop: 44, marginBottom: 18 }}>
+            <div style={{ width: 30, height: 30, borderRadius: 9, background: C.paperDim, color: C.ink, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon.calculator size={15} /></div>
+            <span style={{ fontFamily: FONT_BODY, fontWeight: 600, fontSize: 13.5, color: C.ink }}>Calculator</span>
+          </button>
+          <p style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 12.5, color: "rgba(21,25,43,0.45)", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 12px" }}>{t.suggestedPrompts}</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {prompts.map((p) => (
               <button key={p} onClick={() => send(p)} disabled={loading || limitReached} style={{ textAlign: "left", background: "#fff", border: `1px solid ${C.line}`, borderRadius: 12, padding: "12px 14px", cursor: loading || limitReached ? "default" : "pointer", fontFamily: FONT_BODY, fontSize: 13, color: C.ink, lineHeight: 1.4, opacity: loading || limitReached ? 0.5 : 1 }}>
@@ -2086,11 +2191,11 @@ function ProfileScreen({ t, user, setShowUpgrade, onChangeLanguage, onProfileUpd
         )}
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 22 }}>
-          <div style={{ background: C.paperDim, borderRadius: 14, padding: "14px 16px" }}>
+          <div style={{ background: "#fff", border: `1px solid ${C.line}`, borderRadius: 14, padding: "14px 16px" }}>
             <p style={{ fontFamily: FONT_MONO, fontWeight: 700, fontSize: 20, color: C.ink, margin: 0 }}>{user.xp.toLocaleString()}</p>
             <p style={{ fontFamily: FONT_BODY, fontSize: 12, color: "rgba(13,23,59,0.55)", margin: "2px 0 0" }}>{t.xpLabel}</p>
           </div>
-          <div style={{ background: C.paperDim, borderRadius: 14, padding: "14px 16px" }}>
+          <div style={{ background: "#fff", border: `1px solid ${C.line}`, borderRadius: 14, padding: "14px 16px" }}>
             <p style={{ fontFamily: FONT_MONO, fontWeight: 700, fontSize: 20, color: C.ink, margin: 0 }}>{user.streak}</p>
             <p style={{ fontFamily: FONT_BODY, fontSize: 12, color: "rgba(13,23,59,0.55)", margin: "2px 0 0" }}>{t.streakLabel}</p>
           </div>
@@ -2159,6 +2264,114 @@ function PlanCard({ t, plan, current, onSelect }) {
       ) : (
         <Btn variant={isPremium ? "purple" : "primary"} full disabled={isCurrent} onClick={() => onSelect(plan)}>{isCurrent ? t.currentPlan : t.choosePlan}</Btn>
       )}
+    </div>
+  );
+}
+
+/* ============================== SCIENTIFIC CALCULATOR ============================== */
+function CalculatorModal({ onClose }) {
+  const [tokens, setTokens] = useState([]);
+  const [degMode, setDegMode] = useState(true);
+  const [error, setError] = useState(false);
+
+  const prettyDisplay = (rawTokens) => {
+    const raw = rawTokens.join("");
+    if (!raw) return "0";
+    return raw
+      .replace(/Math\.PI/g, "π")
+      .replace(/Math\.E/g, "e")
+      .replace(/Math\.asin\(/g, "sin⁻¹(")
+      .replace(/Math\.acos\(/g, "cos⁻¹(")
+      .replace(/Math\.atan\(/g, "tan⁻¹(")
+      .replace(/Math\.sin\(([^)]*Math\.PI\/180\*)?/g, "sin(")
+      .replace(/Math\.cos\(([^)]*Math\.PI\/180\*)?/g, "cos(")
+      .replace(/Math\.tan\(([^)]*Math\.PI\/180\*)?/g, "tan(")
+      .replace(/Math\.log10\(/g, "log(")
+      .replace(/Math\.log\(/g, "ln(")
+      .replace(/Math\.sqrt\(/g, "√(")
+      .replace(/\*\*2\b/g, "²")
+      .replace(/\*\*\(-1\)/g, "⁻¹")
+      .replace(/\*\*/g, "^")
+      .replace(/\*/g, "×")
+      .replace(/\//g, "÷");
+  };
+
+  const push = (token) => { setError(false); setTokens((arr) => [...arr, token]); };
+  const backspace = () => { setError(false); setTokens((arr) => arr.slice(0, -1)); };
+  const clearAll = () => { setError(false); setTokens([]); };
+
+  const trig = (fn) => push(degMode ? `Math.${fn}(Math.PI/180*` : `Math.${fn}(`);
+
+  const equals = () => {
+    const raw = tokens.join("");
+    if (!raw) return;
+    try {
+      // Safe by construction: `raw` is built exclusively from a fixed set of button
+      // tokens below (digits, operators, Math.* calls) — never from free-typed text.
+      // eslint-disable-next-line no-new-func
+      const value = Function(`"use strict"; return (${raw});`)();
+      if (typeof value !== "number" || !isFinite(value)) throw new Error("bad result");
+      const rounded = Math.round(value * 1e10) / 1e10;
+      setTokens([String(rounded)]);
+    } catch (e) { setError(true); }
+  };
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (/^[0-9.+\-]$/.test(e.key)) push(e.key);
+      else if (e.key === "*") push("*");
+      else if (e.key === "/") push("/");
+      else if (e.key === "(" || e.key === ")") push(e.key);
+      else if (e.key === "Enter" || e.key === "=") { e.preventDefault(); equals(); }
+      else if (e.key === "Backspace") backspace();
+      else if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tokens, degMode]);
+
+  const rows = [
+    [{ l: degMode ? "DEG" : "RAD", act: () => setDegMode((d) => !d), tone: "mode" }, { l: "sin", act: () => trig("sin") }, { l: "cos", act: () => trig("cos") }, { l: "tan", act: () => trig("tan") }, { l: "C", act: clearAll, tone: "op" }],
+    [{ l: "x²", act: () => push("**2") }, { l: "xʸ", act: () => push("**") }, { l: "√", act: () => push("Math.sqrt(") }, { l: "ln", act: () => push("Math.log(") }, { l: "log", act: () => push("Math.log10(") }],
+    [{ l: "7", act: () => push("7") }, { l: "8", act: () => push("8") }, { l: "9", act: () => push("9") }, { l: "(", act: () => push("(") }, { l: ")", act: () => push(")") }],
+    [{ l: "4", act: () => push("4") }, { l: "5", act: () => push("5") }, { l: "6", act: () => push("6") }, { l: "×", act: () => push("*"), tone: "op" }, { l: "÷", act: () => push("/"), tone: "op" }],
+    [{ l: "1", act: () => push("1") }, { l: "2", act: () => push("2") }, { l: "3", act: () => push("3") }, { l: "+", act: () => push("+"), tone: "op" }, { l: "−", act: () => push("-"), tone: "op" }],
+    [{ l: "π", act: () => push("Math.PI") }, { l: "0", act: () => push("0") }, { l: ".", act: () => push(".") }, { l: "⌫", act: backspace, tone: "op" }, { l: "=", act: equals, tone: "equals" }],
+  ];
+
+  const keyStyle = (tone) => ({
+    border: "none", borderRadius: 12, cursor: "pointer", fontFamily: FONT_HEAD, fontWeight: 600, fontSize: 16, padding: "14px 0",
+    background: tone === "equals" ? C.green : tone === "op" ? C.paperDim : tone === "mode" ? C.ink : "#fff",
+    color: tone === "equals" ? C.ink : tone === "mode" ? C.paper : C.ink,
+    border1: tone === "op" || tone === undefined ? `1px solid ${C.line}` : "none",
+  });
+
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(21,25,43,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 60 }} onClick={onClose}>
+      <div style={{ background: C.paperDim, borderRadius: "24px 24px 0 0", width: "100%", maxWidth: 420, padding: "10px 18px 26px" }} onClick={(e) => e.stopPropagation()}>
+        <div style={{ display: "flex", justifyContent: "center", padding: "8px 0 12px" }}><div style={{ width: 36, height: 4, borderRadius: 3, background: C.line }} /></div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, color: C.ink }}><Icon.calculator size={18} /><span style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 15 }}>Calculator</span></div>
+          <button onClick={onClose} aria-label="Close" style={{ background: "#fff", border: "none", borderRadius: "50%", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}><Icon.x size={13} /></button>
+        </div>
+
+        <div style={{ background: C.ink, borderRadius: 16, padding: "22px 18px", marginBottom: 12, minHeight: 74, display: "flex", alignItems: "flex-end", justifyContent: "flex-end", overflowX: "auto" }}>
+          <span style={{ fontFamily: FONT_MONO, fontWeight: 600, fontSize: tokens.length > 14 ? 20 : 28, color: error ? C.coral : C.paper, whiteSpace: "nowrap" }}>
+            {error ? "Error" : prettyDisplay(tokens)}
+          </span>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {rows.map((row, ri) => (
+            <div key={ri} style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+              {row.map((b, bi) => (
+                <button key={bi} onClick={b.act} style={{ ...keyStyle(b.tone), border: b.tone === "op" || b.tone === undefined ? `1px solid ${C.line}` : "none" }}>{b.l}</button>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -2258,6 +2471,7 @@ export default function pailotApp() {
   const [activeMaterialId, setActiveMaterialId] = useState(null);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [showAdminUpload, setShowAdminUpload] = useState(false);
+  const [showCalculator, setShowCalculator] = useState(false);
   const [resourcesRefreshKey, setResourcesRefreshKey] = useState(0);
   const [materials, setMaterials] = useState([]);
   const [uploadMode, setUploadMode] = useState(null);
@@ -2416,7 +2630,7 @@ export default function pailotApp() {
       return isDesktop ? wrapDesktop(node) : node;
     }
     if (screen === "resources") return <ResourcesScreen key={resourcesRefreshKey} t={t} user={user} setShowUpgrade={setShowUpgrade} viewport={viewport} onOpenAdminUpload={() => setShowAdminUpload(true)} />;
-    if (screen === "tutor") return <TutorScreen t={t} user={user} onXpEarned={addXp} setShowUpgrade={setShowUpgrade} incrementTutorUse={() => setSessionState((s) => ({ ...s, tutorQuestionsToday: s.tutorQuestionsToday + 1 }))} viewport={viewport} />;
+    if (screen === "tutor") return <TutorScreen t={t} user={user} onXpEarned={addXp} setShowUpgrade={setShowUpgrade} incrementTutorUse={() => setSessionState((s) => ({ ...s, tutorQuestionsToday: s.tutorQuestionsToday + 1 }))} viewport={viewport} onOpenCalculator={() => setShowCalculator(true)} />;
     if (screen === "board") {
       const node = <LeaderboardScreen t={t} user={user} setShowUpgrade={setShowUpgrade} />;
       return isDesktop ? wrapDesktop(node) : node;
@@ -2433,13 +2647,16 @@ export default function pailotApp() {
       <GoogleFonts />
 
       {isDesktop ? (
-        <TopNav t={t} screen={["materialDetail"].includes(screen) ? "home" : screen} setScreen={(s) => { setUploadMode(null); setScreen(s); }} user={user} setShowUpgrade={setShowUpgrade} onChangeLanguage={() => setProfile((p) => ({ ...p, lang: null }))} />
+        <TopNav t={t} screen={["materialDetail"].includes(screen) ? "home" : screen} setScreen={(s) => { setUploadMode(null); setScreen(s); }} user={user} setShowUpgrade={setShowUpgrade} onChangeLanguage={() => setProfile((p) => ({ ...p, lang: null }))} onOpenCalculator={() => setShowCalculator(true)} />
       ) : (
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px 10px", borderBottom: `1px solid ${C.line}`, background: C.paper, position: "sticky", top: 0, zIndex: 40 }}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Logo tone="dark" height={22} />
           </div>
-          <PlanBadge plan={user.plan} />
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button onClick={() => setShowCalculator(true)} aria-label="Calculator" style={{ width: 32, height: 32, borderRadius: "50%", background: C.paperDim, border: "none", display: "flex", alignItems: "center", justifyContent: "center", color: C.ink, cursor: "pointer" }}><Icon.calculator size={16} /></button>
+            <PlanBadge plan={user.plan} />
+          </div>
         </div>
       )}
 
@@ -2456,8 +2673,13 @@ export default function pailotApp() {
       {showAdminUpload && (
         <AdminUploadModal t={t} onClose={() => setShowAdminUpload(false)} onUploaded={() => setResourcesRefreshKey((k) => k + 1)} />
       )}
+
+      {showCalculator && (
+        <CalculatorModal onClose={() => setShowCalculator(false)} />
+      )}
     </div>
   );
 }
+
 
 
